@@ -7,7 +7,7 @@ struct Node {
     Node* next;
 };
 
-// ================= STACK =================
+//STACK
 
 class Stack {
 private:
@@ -63,7 +63,7 @@ public:
     }
 };
 
-// ================= QUEUE =================
+//QUEUE
 
 class Queue {
 private:
@@ -134,7 +134,7 @@ public:
     }
 };
 
-// ================= MAIN FUNCTION =================
+//MAIN FUNCTION
 
 int main() {
 
