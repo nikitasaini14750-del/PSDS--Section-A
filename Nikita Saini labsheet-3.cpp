@@ -1,0 +1,171 @@
+#include <iostream>
+using namespace std;
+
+// Node structure
+struct Node {
+    int data;
+    Node* next;
+};
+
+// ================= STACK =================
+
+class Stack {
+private:
+    Node* top;
+
+public:
+    Stack() {
+        top = NULL;
+    }
+
+    // Push operation
+    void push(int value) {
+        Node* newNode = new Node();
+
+        newNode->data = value;
+        newNode->next = top;
+        top = newNode;
+
+        cout << value << " pushed into stack.\n";
+    }
+
+    // Pop operation
+    void pop() {
+        if (top == NULL) {
+            cout << "Stack Underflow!\n";
+            return;
+        }
+
+        Node* temp = top;
+        cout << temp->data << " popped from stack.\n";
+
+        top = top->next;
+        delete temp;
+    }
+
+    // Display stack
+    void display() {
+        if (top == NULL) {
+            cout << "Stack is empty.\n";
+            return;
+        }
+
+        Node* temp = top;
+
+        cout << "Stack: ";
+
+        while (temp != NULL) {
+            cout << temp->data << " ";
+            temp = temp->next;
+        }
+
+        cout << endl;
+    }
+};
+
+// ================= QUEUE =================
+
+class Queue {
+private:
+    Node* front;
+    Node* rear;
+
+public:
+    Queue() {
+        front = NULL;
+        rear = NULL;
+    }
+
+    // Enqueue operation
+    void enqueue(int value) {
+        Node* newNode = new Node();
+
+        newNode->data = value;
+        newNode->next = NULL;
+
+        if (rear == NULL) {
+            front = rear = newNode;
+        }
+        else {
+            rear->next = newNode;
+            rear = newNode;
+        }
+
+        cout << value << " inserted into queue.\n";
+    }
+
+    // Dequeue operation
+    void dequeue() {
+        if (front == NULL) {
+            cout << "Queue Underflow!\n";
+            return;
+        }
+
+        Node* temp = front;
+
+        cout << temp->data << " removed from queue.\n";
+
+        front = front->next;
+
+        if (front == NULL) {
+            rear = NULL;
+        }
+
+        delete temp;
+    }
+
+    // Display queue
+    void display() {
+        if (front == NULL) {
+            cout << "Queue is empty.\n";
+            return;
+        }
+
+        Node* temp = front;
+
+        cout << "Queue: ";
+
+        while (temp != NULL) {
+            cout << temp->data << " ";
+            temp = temp->next;
+        }
+
+        cout << endl;
+    }
+};
+
+// ================= MAIN FUNCTION =================
+
+int main() {
+
+    Stack s;
+    Queue q;
+
+    // Stack operations
+    cout << "----- STACK OPERATIONS -----\n";
+
+    s.push(10);
+    s.push(20);
+    s.push(30);
+
+    s.display();
+
+    s.pop();
+
+    s.display();
+
+    // Queue operations
+    cout << "\n----- QUEUE OPERATIONS -----\n";
+
+    q.enqueue(10);
+    q.enqueue(20);
+    q.enqueue(30);
+
+    q.display();
+
+    q.dequeue();
+
+    q.display();
+
+    return 0;
+}
