@@ -1,0 +1,197 @@
+import mysql.connector
+
+
+# 1. Connect to MySQL
+
+con = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="Nikiee@123"
+)
+
+cursor = con.cursor()
+
+print("Connected to MySQL successfully!")
+
+
+
+# 2. Create Database
+
+cursor.execute("CREATE DATABASE IF NOT EXISTS CollegeDB")
+
+print("Database CollegeDB created successfully!")
+
+
+
+# 3. Select Database
+
+cursor.execute("USE CollegeDB")
+
+
+
+# 4. Create Student Table
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS Student (
+    Student_ID INT PRIMARY KEY,
+    Student_Name VARCHAR(50) NOT NULL,
+    Age INT
+)
+""")
+
+print("Student table created successfully!")
+
+# 5. Create Course Table
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS Course (
+    Course_ID INT PRIMARY KEY,
+    Course_Name VARCHAR(50) NOT NULL
+)
+""")
+
+print("Course table created successfully!")
+
+
+# 6. Create Enrollment Table
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS Enrollment (
+    Enrollment_ID INT PRIMARY KEY,
+    Student_ID INT,
+    Course_ID INT,
+
+    FOREIGN KEY (Student_ID)
+        REFERENCES Student(Student_ID),
+
+    FOREIGN KEY (Course_ID)
+        REFERENCES Course(Course_ID)
+)
+""")
+
+print("Enrollment table created successfully!")
+
+
+# 7. Insert Student Data
+
+students = [
+    (1, "Nikita", 20),
+    (2, "Rahul", 21),
+    (3, "Priya", 20),
+    (4, "Aman", 22)
+]
+
+cursor.executemany("""
+INSERT IGNORE INTO Student
+(Student_ID, Student_Name, Age)
+VALUES (%s, %s, %s)
+""", students)
+
+
+
+# 8. Insert Course Data
+
+
+courses = [
+    (101, "Python"),
+    (102, "Java"),
+    (103, "SQL"),
+    (104, "C++")
+]
+
+cursor.executemany("""
+INSERT IGNORE INTO Course
+(Course_ID, Course_Name)
+VALUES (%s, %s)
+""", courses)
+
+
+
+# 9. Insert Enrollment Data
+
+enrollments = [
+    (1, 1, 101),
+    (2, 2, 102),
+    (3, 3, 103),
+    (4, 4, 104),
+    (5, 1, 103)
+]
+
+cursor.executemany("""
+INSERT IGNORE INTO Enrollment
+(Enrollment_ID, Student_ID, Course_ID)
+VALUES (%s, %s, %s)
+""", enrollments)
+
+
+# Save changes
+con.commit()
+
+print("Data inserted successfully!")
+
+# 10. Display Student Table
+
+print("\n STUDENT TABLE")
+
+cursor.execute("SELECT * FROM Student")
+
+for row in cursor.fetchall():
+    print(row)
+
+# 11. Display Course Table
+print("\nCOURSE TABLE")
+
+cursor.execute("SELECT * FROM Course")
+
+for row in cursor.fetchall():
+    print(row)
+
+
+
+# 12. Display Enrollment Table
+
+print("\nENROLLMENT TABLE")
+
+cursor.execute("SELECT * FROM Enrollment")
+
+for row in cursor.fetchall():
+    print(row)
+
+
+
+# 13. Display All Tables
+
+print("\nTABLES IN COLLEGEDB")
+
+cursor.execute("SHOW TABLES")
+
+for table in cursor.fetchall():
+    print(table[0])
+
+
+
+# 14. Display Student and Course Together
+print("\nSTUDENT COURSE DETAILS")
+
+cursor.execute("""
+SELECT
+    Student.Student_ID,
+    Student.Student_Name,
+    Course.Course_Name
+FROM Student
+JOIN Enrollment
+    ON Student.Student_ID = Enrollment.Student_ID
+JOIN Course
+    ON Enrollment.Course_ID = Course.Course_ID
+""")
+
+for row in cursor.fetchall():
+    print(row)
+
+
+# 15. Close Connection
+cursor.close()
+con.close()
+
+print("\nDatabase connection closed.")
+print("LAB 4 COMPLETED SUCCESSFULLY!")
