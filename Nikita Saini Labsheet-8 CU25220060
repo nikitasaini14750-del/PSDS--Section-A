@@ -1,0 +1,169 @@
+//1.
+
+/*#include <iostream>
+using namespace std;
+
+int main()
+{
+    int n, k;
+    cin >> n >> k;
+
+    int arr[100005];
+
+    for(int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    int sum = 0;
+
+    // Sum of first k elements
+    for(int i = 0; i < k; i++)
+    {
+        sum += arr[i];
+    }
+
+    int maxSum = sum;
+
+    // Sliding window
+    for(int i = k; i < n; i++)
+    {
+        sum = sum - arr[i-k] + arr[i];
+
+        if(sum > maxSum)
+        {
+            maxSum = sum;
+        }
+    }
+
+    cout << "Maximum Sum = " << maxSum;
+
+    return 0;
+}*/
+
+
+
+
+//2.
+
+/*#include <iostream>
+#include <string>
+using namespace std;
+
+int main()
+{
+    string s;
+    cin >> s;
+
+    int last[26];
+
+    for(int i = 0; i < 26; i++)
+    {
+        last[i] = -1;
+    }
+
+    int start = 0;
+    int maxLength = 0;
+
+    for(int i = 0; i < s.length(); i++)
+    {
+        int index = s[i] - 'a';
+
+        // If character is repeated
+        if(last[index] >= start)
+        {
+            start = last[index] + 1;
+        }
+
+        last[index] = i;
+
+        int length = i - start + 1;
+
+        if(length > maxLength)
+        {
+            maxLength = length;
+        }
+    }
+
+    cout << "Longest Length = " << maxLength;
+
+    return 0;
+}*/
+
+
+
+//3.
+
+
+#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+int main()
+{
+    int n, m, k;
+    cin >> n >> m >> k;
+
+    vector<int> u(m), v(m), w(m);
+
+    // Input edges
+    for(int i = 0; i < m; i++)
+    {
+        cin >> u[i] >> v[i] >> w[i];
+    }
+
+    const long long INF = LLONG_MAX / 4;
+
+    vector<long long> dist(n + 1, INF);
+
+    dist[1] = 0;
+
+    // Allow at most k edges
+    for(int step = 1; step <= k; step++)
+    {
+        vector<long long> next = dist;
+
+        for(int i = 0; i < m; i++)
+        {
+            int a = u[i];
+            int b = v[i];
+            int cost = w[i];
+
+            // a to b
+            if(dist[a] != INF)
+            {
+                long long newCost = dist[a] + cost;
+
+                if(newCost < next[b])
+                {
+                    next[b] = newCost;
+                }
+            }
+
+            // b to a (undirected graph)
+            if(dist[b] != INF)
+            {
+                long long newCost = dist[b] + cost;
+
+                if(newCost < next[a])
+                {
+                    next[a] = newCost;
+                }
+            }
+        }
+
+        dist = next;
+    }
+
+    if(dist[n] == INF)
+    {
+        cout << -1;
+    }
+    else
+    {
+        cout << "Minimum Path Weight = " << dist[n];
+    }
+
+    return 0;
+}
