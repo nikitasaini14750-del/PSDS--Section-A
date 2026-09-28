@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+using namespace std;
+
+void solve() {
+    int N;
+    cout << "Enter N: ";
+    cin >> N;
+
+    vector<int> A(N);
+
+    cout << "Enter array elements: ";
+    for (int i = 0; i < N; i++) {
+        cin >> A[i];
+    }
+
+    long long operations = 0;
+
+    for (int i = 0; i < N; i++) {
+        operations += abs(A[i]);
+    }
+
+    cout << "Minimum operations: " << operations << endl;
+}
+
+int main() {
+    int T;
+
+    cout << "Enter number of test cases: ";
+    cin >> T;
+
+    while (T--) {
+        solve();
+    }
+
+    return 0;
+}
