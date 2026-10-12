@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int hammingDistance(int a, int k)
+{
+    int x = a ^ k;
+    int count = 0;
+
+    while (x > 0)
+    {
+        count += x & 1;
+        x = x >> 1;
+    }
+
+    return count;
+}
+
+int main()
+{
+    int T;
+    cin >> T;
+
+    while (T--)
+    {
+        int N, K;
+        cin >> N >> K;
+
+        vector<int> A(N);
+
+        for (int i = 0; i < N; i++)
+        {
+            cin >> A[i];
+        }
+
+        sort(A.begin(), A.end(), [K](int a, int b)
+        {
+            int d1 = hammingDistance(a, K);
+            int d2 = hammingDistance(b, K);
+
+            if (d1 == d2)
+                return a < b;
+
+            return d1 < d2;
+        });
+
+        for (int i = 0; i < N; i++)
+        {
+            cout << A[i] << " ";
+        }
+
+        cout << endl;
+    }
+
+    return 0;
+}
